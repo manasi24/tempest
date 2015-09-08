@@ -36,12 +36,3 @@ class S3BucketsTest(base.BotoTestCase):
         self.assertBotoError(self.s3_error_code.client.NoSuchBucket,
                              self.client.get_bucket, bucket_name)
         self.cancelResourceCleanUp(cleanup_key)
-
-    def test_delete_non_empty_bucket(self):
-        object_name = data_utils.rand_name("s3object")
-        object_s3 = self.bucket.new_key(object_name)
-        data = data_utils.arbitrary_string()
-        object_s3.set_contents_from_string(data)
-        self.addResourceCleanUp(self.bucket.delete_key, object_name)
-        self.assertBotoError(self.s3_error_code.client.BucketNotEmpty,
-                             self.client.delete_bucket, self.bucket_name)
