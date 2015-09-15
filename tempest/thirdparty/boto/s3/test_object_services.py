@@ -9,16 +9,16 @@ from tempest import config
 
 CONF = config.CONF
 
-class S3BucketsTest(base.BotoTestCase):
+class S3ObjectsTest(base.BotoTestCase):
 
     @classmethod
     def setup_clients(cls):
-        super(S3BucketsTest, cls).setup_clients()
+        super(S3ObjectsTest, cls).setup_clients()
         cls.client = cls.os.s3_client
 
     @classmethod
     def resource_setup(cls):
-        super(S3BucketsTest, cls).resource_setup()
+        super(S3ObjectsTest, cls).resource_setup()
         cls.bucket_name = data_utils.rand_name("s3bucket")
         cls.bucket = cls.client.create_bucket(cls.bucket_name)
         cls.object_name = data_utils.rand_name("s3object")
@@ -28,7 +28,7 @@ class S3BucketsTest(base.BotoTestCase):
 
     @classmethod
     def resource_cleanup(cls):
-        super(S3BucketsTest, cls).resource_cleanup()
+        super(S3ObjectsTest, cls).resource_cleanup()
         cls.destroy_bucket(cls.client.connection_data, cls.bucket)
 
     def _create_bucket(self):
@@ -90,7 +90,6 @@ class S3BucketsTest(base.BotoTestCase):
         body = dst_object_s3.get_contents_as_string()
         self.assertEqual(body, self.data)
        
-
     def test_delete_object(self):
         object_name = data_utils.rand_name("s3object")
         object_s3 = self.bucket.new_key(object_name)
